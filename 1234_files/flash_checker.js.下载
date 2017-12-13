@@ -1,0 +1,38 @@
+/**
+ * Created by guozhenjiang on 2017/5/9.
+ */
+//Powere	d By smvv @hi.baidu.com/smvv21
+function flashChecker() {
+    var hasFlash = 0;         //是否安装了flash
+    var flashVersion = 0; //flash版本
+    var isIE = /*@cc_on!@*/0;      //是否IE浏览器
+
+    if (isIE) {
+        var swf = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+        if (swf) {
+            hasFlash = 1;
+            VSwf = swf.GetVariable("$version");
+            flashVersion = parseInt(VSwf.split(" ")[1].split(",")[0]);
+        }
+    } else {
+        if (navigator.plugins && navigator.plugins.length > 0) {
+            var swf = navigator.plugins["Shockwave Flash"];
+            if (swf) {
+                hasFlash = 1;
+                var words = swf.description.split(" ");
+                for (var i = 0; i < words.length; ++i) {
+                    if (isNaN(parseInt(words[i]))) continue;
+                    flashVersion = parseInt(words[i]);
+                }
+            }
+        }
+    }
+    return { f: hasFlash, v: flashVersion };
+}
+
+var fls = flashChecker();
+var msg = $('<p>您的计算机尚未安装Flash，点击安装<a style="color: white" href="https://get.adobe.com/cn/flashplayer/">https://get.adobe.com/cn/flashplayer/</a></p>' +
+    '<p>安装后请确认浏览器flash插件已激活</p>')
+
+// if (!fls.f) $('body').html('载入flash出错,请确认flash player插件是否安装或禁用');
+if (!fls.f || fls.v<=24) $('body').html("").append(msg);

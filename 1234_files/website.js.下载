@@ -1,0 +1,28 @@
+var lowerVersionIE = false;
+var newPath = '';
+if (navigator.userAgent.indexOf('MSIE 6.0') >= 0 || navigator.userAgent.indexOf('MSIE 7.0') >= 0 || navigator.userAgent.indexOf('MSIE 8.0') >= 0) {
+    lowerVersionIE = true;
+}
+
+if (lowerVersionIE) {
+    var host = location.host;
+    var path = location.pathname;
+    var search = location.search;
+    var protocol = location.protocol;
+
+    if (location.pathname.indexOf('/dev/') >= 0) {
+        newPath = path.replace('/dev/', '/devie/');
+        location.pathname = newPath;
+    } else if (location.pathname.indexOf('/devie/') >= 0) {
+    } else if (location.pathname.indexOf('/home/') >= 0) {
+        newPath = path.replace('/home/', '/homeie/');
+        location.pathname = newPath;
+    } else if (location.pathname.indexOf('/homeie/') >= 0) {
+        newPath = '/homeie' + path;
+        location.pathname = newPath;
+    }
+    else {
+        newPath = '/homeie' + path;
+        location.pathname = newPath;
+    }
+}

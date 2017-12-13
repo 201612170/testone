@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://www.hcicloud.com/experimental/experimental_asr -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>灵云——全球唯一全方位人工智能开放平台,语音导航,语音质检,语音识别,语音合成,语音控制,身份证识别,发票识别,ocr识别,手写识别,云服务平台</title>
+
+<!-- Bootstrap core CSS -->
+<link href="./bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="./main(1).css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="/Public/js/html5shiv.js"></script>
+      <script src="/Public/js/respond.min.js"></script>
+    <![endif]-->
+<style>
+	.container{
+		width:700px;
+	}
+	p{
+		margin-bottom:0px;
+	}
+	.row{
+		margin-top:20px;
+		margin-bottom:20px;
+	}
+	
+	.btn-block + .btn-block{
+		margin-top:0px;
+	}
+	
+</style>
+</head>
+
+<body style="background-color:#3498db;">
+	<div class="container">
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div id="result" style="width:100%;height:200px;margin-top:5px;padding:10px 20px;overflow-y:hidden;border-radius:20px;background-color:#fff;">
+					<span style="color:rgb(75, 85, 108);"></span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="col-xs-3 text-center">语种</div>
+  				<div class="col-xs-6">
+					<div class="btn-group" style="width:100%">
+						<button class="btn btn-default" style="width:80%" type="button"><span id="asr-lang">中文</span></button>
+						<button class="btn btn-default dropdown-toggle" style="width:20%" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></button>						
+						<ul class="dropdown-menu" style="width:80%">
+							<li><a class="asr-lang" href="javascript:void(0)">中文</a></li>
+							<li><a class="asr-lang" href="javascript:void(0)">英文</a></li>
+							<li><a class="asr-lang" href="javascript:void(0)">台湾国语</a></li>
+							<li><a class="asr-lang" href="javascript:void(0)">维吾尔语</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="col-xs-3 text-center">领域</div>
+				<div class="col-xs-6">
+					<div class="btn-group" style="width:100%">
+						<button class="btn btn-default" style="width:80%" type="button"><span id="asr-field">自由说</span></button>
+						<button class="btn btn-default dropdown-toggle" style="width:20%" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></button>							
+						<ul class="dropdown-menu" id="asr-wordgram" role="menu" style="width:80%">
+							<li role="presentation"><a href="javascript:void(0)" role="menuitem" tabindex="-1" data="0" onclick="changeAsrField(this);">自由说</a></li>
+							<li role="presentation"><a href="javascript:void(0)" role="menuitem" tabindex="-1" data="2" onclick="changeAsrField(this);">地图导航</a></li>
+							<li role="presentation"><a href="javascript:void(0)" role="menuitem" tabindex="-1" data="1" onclick="changeAsrField(this);">音乐歌曲</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-xs-10 col-xs-offset-1 text-center">
+			<div id="asr-flash-content">
+				<object align="middle" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" data="./asr_20170711.swf.下载" height="144" id="asrflash" width="100%">
+					<param name="allowFullScreen" value="false">
+					<param name="movie" value="/Public/flash/asr_20170711.swf">
+					<param name="quality" value="high">
+					<param name="bgcolor" value="#eaf7fb">
+					<param name="autoplay" value="auto">
+					<param name="loop" value="true">
+					<param name="wmode" value="transparent">
+					<param name="scale" value="noscale">
+					<param name="menu" value="true">
+					<param name="devicefont" value="false">
+					<param name="salign" value="">
+					<param name="allowScriptAccess" value="always">
+					<!--[if !IE]>-->
+					<object name="asrflash_no_ie" data="./asr_20170711.swf.下载" height="144" id="asrflash_no_ie" type="application/x-shockwave-flash" width="100%">
+						<param name="movie" value="/Public/flash/asr_20170711.swf">
+						<param name="quality" value="high">
+						<param name="bgcolor" value="#eaf7fb">
+						<param name="autoplay" value="auto">
+						<param name="loop" value="true">
+						<param name="wmode" value="transparent">
+						<param name="scale" value="noscale">
+						<param name="menu" value="true">
+	
+						<param name="devicefont" value="false">
+						<param name="salign" value="">
+						<param name="allowScriptAccess" value="always">
+					</object>
+					<!--<![endif]-->
+					<!--   				<embed id="asrflash_no_ie" src="/Public/flash/asr_20140912.swf" quality="high" width="144" height="150" bgcolor="#eaf7fb" play="true" wmode="transparent" scale="noscale" devicefont="false" allowScriptAccess="always"  type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" style="margin-left:-120px;margin-top:-150px;margin-bottom:50px;border:1px solid #000;"/>-->
+				</object>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row">
+            <div class="col-xs-6 col-xs-offset-3" id="asr-section">
+              <button class="btn btn-default btn-primary-asr btn-block mic-start asr-btn" style="height:30px;">开始录音</button>
+              <button class="btn btn-danger btn-block mic-stop hidden asr-btn" style="height:30px;">进行识别</button>
+            </div>		
+		</div>
+		 <div class="row">
+		 
+				<span style="color: rgb(75, 85, 108)">请插入麦克风，点击开始按钮体验吧！</span>
+		 </div>
+		
+		<div class="row">
+			<div class="blank hidden" id="notice" style="padding: 20px; overflow-y: scroll; margin-left: 55px; height: 120px; margin-top: 20px;">
+				<span style="color: rgb(75, 85, 108)">请插入麦克风，点击开始按钮体验吧！</span>
+			</div>
+		</div>
+	</div>
+
+	<script src="./jquery-1.11.3.min.js.下载"></script>
+	<script src="./bootstrap.min.js.下载"></script>
+	<script src="./asr.js.下载"></script>
+	<script src="./flash_checker.js.下载"></script>
+	<script>
+   	//根据语言选择领域
+	$(".asr-lang").click(function() {
+   	 	var lang = $(this).text();
+   	 	$("#asr-lang").text(lang);
+  	 	// 当语种为英文时，领域不能选择
+        if (lang == "英文") {
+        	$("#asr-field").text("自由说");
+        	$("#asr-wordgram").addClass('hidden');
+    		asr_swfObj.SetASRCapkeyAndDomain("asr.cloud.freetalk.english");		   		
+        } else if(lang=="台湾国语") {
+        	$("#asr-field").text("自由说");
+        	$("#asr-wordgram").addClass('hidden');
+    		asr_swfObj.SetASRCapkeyAndDomain("asr.cloud.freetalk.taiwan");	
+        } else if(lang=="维吾尔语") {
+        	$("#asr-field").text("自由说");
+        	$("#asr-wordgram").addClass('hidden');
+    		asr_swfObj.SetASRCapkeyAndDomain("asr.cloud.freetalk.uyghur");	
+        } else {
+        	$("#asr-wordgram").removeClass('hidden');
+    		asr_swfObj.SetASRCapkeyAndDomain("asr.cloud.freetalk");
+        }
+   	});
+	</script>
+
+<div id="qb-sougou-search" style="display: none; opacity: 0;"><p>搜索</p><p class="last-btn">复制</p><iframe src="./saved_resource.html"></iframe></div></body></html>

@@ -1,0 +1,248 @@
+function IsIE()
+{
+	var sUserAgent = navigator.userAgent;
+	var isOpera = sUserAgent.indexOf("Opera")>-1;
+	var oisIE = (sUserAgent.indexOf("compatible") > -1
+			&&sUserAgent.indexOf("MSIE") > -1
+			&& !isOpera) || sUserAgent.indexOf(".NET") > -1;
+	if(!oisIE){
+		return false;
+	}
+	return true;
+}
+
+var asr_swfObj = null;
+var asrCapkey = "asr.cloud.freetalk";
+var grammarFile = "";
+var grammarType = "";
+
+var jsReady = false;
+function isReady() {
+	return jsReady;
+}
+
+function OpenRecord(){
+	jsReady = true;
+	if ( asr_swfObj == null ){
+		if ( IsIE() ){
+			asr_swfObj = document.getElementById('asrflash');
+		}
+		else {
+			asr_swfObj = document.getElementById('asrflash_no_ie');
+		}
+	}
+}
+OpenRecord();
+
+function CloseRecord(){
+	if(asr_swfObj != null){
+		try{			
+			// asr_swfObj.DemoStop();
+			asr_swfObj = null;			
+		}catch(e){
+			asr_swfObj = null;
+		}	  	
+	}	
+}
+
+
+function StartRecord(){	
+	if(asr_swfObj == null){
+		alert("没有加载asr flash文件，刷新页面重试。");
+	}
+	
+	asr_swfObj.DemoStart();
+//	document.getElementById("StartRecord").setAttribute("disabled","true");
+//	document.getElementById("wordgram").setAttribute("disabled","true");
+	$('#notice').html('<p class="asr-result">开始录音</p>');
+//	window.document.all("result").value = "开始录音\n";
+}
+
+function StopRecord(){
+	if(asr_swfObj == null){
+		alert("没有加载asr flash文件，刷新页面重试。");
+	}
+	
+	asr_swfObj.DemoStop();
+//	document.getElementById("StartRecord").removeAttribute("disabled");
+//	document.getElementById("wordgram").removeAttribute("disabled");
+	$('#notice').html('<p class="asr-result">结束录音</p>');
+//	window.document.all("result").value = "结束录音\n";
+}
+
+function recording()
+{
+	StartRecord();
+}
+
+function stoping()
+{
+	StopRecord();
+}
+
+function reset() {
+	asr_swfObj.Reset();
+}
+function SetInfo(value1, value2) {
+	if ( value1 < 2 ) {
+		$('#notice').append('<p class="asr-result">'+value2+'</p>');
+		$('#notice').scrollTop($('#notice')[0].scrollHeight);//滚动到底部
+//		window.document.all("result").value += value2 + "\n";
+	}
+}
+function SetRecogResult(value) {
+	//str="识别结果:<font color=red>"+value+"</font>";
+//	$('#result').append('<p class="asr-result">识别结果: <span>'+value+'</span></p>');
+	if(value != null){		
+		$('#result').append('<p class="asr-result">'+value+'</p>');
+		$('#result').scrollTop($('#result')[0].scrollHeight);//滚动到底部
+	}
+	
+	//window.document.all("result").value += str + "\n";
+}
+
+function freshwordlist(){
+	grammarFile = "";
+	grammarType = "";
+	var gram = document.getElementById("wordgram").value;
+	if(gram == '0'){
+		document.getElementById("wordlist").style.enable="false";
+		document.getElementById("wordlist").value="通用识别支持自由说，可以随便说说试试！";
+		asrCapkey = "asr.cloud.freetalk";
+		return;
+	}
+	if(gram == '1'){
+		document.getElementById("wordlist").style.enable="false";
+		document.getElementById("wordlist").value="喜欢的歌手、歌曲，可以随便说说试试！";
+		asrCapkey = "asr.cloud.freetalk.music";
+		return;
+	}	
+	if(gram == '2'){
+		document.getElementById("wordlist").style.enable="false";
+		document.getElementById("wordlist").value="说说各地的地名试试！";
+		asrCapkey = "asr.cloud.freetalk.poi";
+		return;
+	}	
+	if(gram=='11'){
+		document.getElementById("wordlist").style.enable="true";
+		grammarFile="意愿+地址+动作（可选）\n句式2：地址+导航\n\n意愿：\n去\n我去\n你去\n我想去\n你想去\n我要去\n我想要去\n我就去\n我将去\n我去过\n开车去\n我开车去\n你开车去\n坐车去\n我坐车去\n你坐车去\n打车去\n我打车去\n打的去\n我打的去\n坐公交去\n\n地址：\n中关村\n西直门\n长安街\n王府井\n海淀\n清华大学\n北京大学\n融科中心\n上地\n中关村软件园\n地铁站\n西二旗\n\n动作：\n上班\n吃饭\n购物\n喝茶\n买东西\n取钱\n饭店\n咖啡店\n\n导航问题：\n在哪\n在哪里\n怎么走\n是哪里";
+		document.getElementById("wordlist").value="句式1：";
+		document.getElementById("wordlist").value+=grammarFile;
+		grammarType="jsgf";
+		asrCapkey = "asr.cloud.grammar";
+		return;
+	}
+	if(gram=='12'){
+		document.getElementById("wordlist").style.enable="true";
+		grammarFile="全屏识别\n区域识别\n照相\n返回\n识别\n播报\n编辑\n翻译\n发送\n一条龙";
+		document.getElementById("wordlist").value="词表：\n\n";
+		document.getElementById("wordlist").value+=grammarFile;
+		grammarType="wordlist";
+		asrCapkey = "asr.cloud.grammar";
+	}
+	if(gram=='13'){
+		document.getElementById("wordlist").style.enable="true";
+		grammarFile = "全球通\n动感地带\n神州行\n本地通话\n国内长途\n国内漫游\n国内短信\n来电显示\n彩铃\n国内彩信\n来电提醒\n语音信箱\n呼叫等待\n呼叫转移\n呼叫限制\n亲情号码\n主叫付费\n被叫付费\n菜单更新\n国际长途\n国际短信\n国际彩信\n国际漫游\n手机邮箱\n移动秘书\n语音杂志\n生活百事通\n易登机\n高尔夫俱乐部\n集团客户业务\n飞信\n手机报\n一起玩吧\n无线音乐\n手机支付\n手机银行\n手机证券\n来电提醒\n短信回执\n天气预报\n国学短信\n国学彩信\n手机游戏\n手机动漫\n魔信\n手机钱包\n号簿管家\n手机电视\n快讯\n手机地图\n手机导航\n超级邮箱\n万花筒\n彩信明信片\n密友吧\n彩铃\n中央音乐平台\n全曲下载\n彩信冲印\n红段子\n亲情汇款\n会议电话\n主叫显示\n中文秘书\n直通车\n手机桌面助理\n语音号码簿\n上网\n邮箱\n老乡网";
+		document.getElementById("wordlist").value="词表：\n\n";
+		document.getElementById("wordlist").value+=grammarFile;
+		grammarType="wordlist";
+		asrCapkey = "asr.cloud.grammar";
+	}
+	
+	if ( asr_swfObj != null ){
+		asr_swfObj.SetASRCapkeyAndDomain( asrCapkey );
+		asr_swfObj.SetGrammarFile( grammarFile, grammarType );
+	}
+}
+
+function SetAuthInfo(){
+	var serverUrl = "";
+	var appkey ="";
+	var developerKey = "";
+	var udid = "";
+	if ( asr_swfObj != null ) {
+		asr_swfObj.SetAuthInfo( serverUrl, appkey, developerKey, udid );
+	}
+}
+
+/*****************************************************************************************************/
+// 更换识别领域
+//$('#asr-wordgram a').click(function(){
+function changeAsrField(obj){
+	grammarFile = "";
+	grammarType = "";
+	var gram = $(obj).attr('data');
+	$('#asr-field').html($(obj).html());
+	
+	switch(gram){
+	case "0": 
+//		document.getElementById("wordlist").style.enable="false";
+//		document.getElementById("wordlist").value="通用识别支持自由说，可以随便说说试试！";
+		asrCapkey = "asr.cloud.freetalk";
+		return;
+	case "1":
+//		document.getElementById("wordlist").style.enable="false";
+//		document.getElementById("wordlist").value="喜欢的歌手、歌曲，可以随便说说试试！";
+		asrCapkey = "asr.cloud.freetalk.music";
+		return;
+	case "2":
+//		document.getElementById("wordlist").style.enable="false";
+//		document.getElementById("wordlist").value="说说各地的地名试试！";
+		asrCapkey = "asr.cloud.freetalk.poi";
+		return;
+	case "11":
+		grammarFile="意愿+地址+动作（可选）\n句式2：地址+导航\n\n意愿：\n去\n我去\n你去\n我想去\n你想去\n我要去\n我想要去\n我就去\n我将去\n我去过\n开车去\n我开车去\n你开车去\n坐车去\n我坐车去\n你坐车去\n打车去\n我打车去\n打的去\n我打的去\n坐公交去\n\n地址：\n中关村\n西直门\n长安街\n王府井\n海淀\n清华大学\n北京大学\n融科中心\n上地\n中关村软件园\n地铁站\n西二旗\n\n动作：\n上班\n吃饭\n购物\n喝茶\n买东西\n取钱\n饭店\n咖啡店\n\n导航问题：\n在哪\n在哪里\n怎么走\n是哪里";
+//		document.getElementById("wordlist").style.enable="true";
+//		document.getElementById("wordlist").value="句式1：";
+//		document.getElementById("wordlist").value+=grammarFile;
+		grammarType="jsgf";
+		asrCapkey = "asr.cloud.grammar";
+		return;
+	case "12":
+		grammarFile="全屏识别\n区域识别\n照相\n返回\n识别\n播报\n编辑\n翻译\n发送\n一条龙";
+//		document.getElementById("wordlist").style.enable="true";
+//		document.getElementById("wordlist").value="词表：\n\n";
+//		document.getElementById("wordlist").value+=grammarFile;
+		grammarType="wordlist";
+		asrCapkey = "asr.cloud.grammar";
+		break;
+	case "13":
+		grammarFile = "全球通\n动感地带\n神州行\n本地通话\n国内长途\n国内漫游\n国内短信\n来电显示\n彩铃\n国内彩信\n来电提醒\n语音信箱\n呼叫等待\n呼叫转移\n呼叫限制\n亲情号码\n主叫付费\n被叫付费\n菜单更新\n国际长途\n国际短信\n国际彩信\n国际漫游\n手机邮箱\n移动秘书\n语音杂志\n生活百事通\n易登机\n高尔夫俱乐部\n集团客户业务\n飞信\n手机报\n一起玩吧\n无线音乐\n手机支付\n手机银行\n手机证券\n来电提醒\n短信回执\n天气预报\n国学短信\n国学彩信\n手机游戏\n手机动漫\n魔信\n手机钱包\n号簿管家\n手机电视\n快讯\n手机地图\n手机导航\n超级邮箱\n万花筒\n彩信明信片\n密友吧\n彩铃\n中央音乐平台\n全曲下载\n彩信冲印\n红段子\n亲情汇款\n会议电话\n主叫显示\n中文秘书\n直通车\n手机桌面助理\n语音号码簿\n上网\n邮箱\n老乡网";
+//		document.getElementById("wordlist").style.enable="true";
+//		document.getElementById("wordlist").value="词表：\n\n";
+//		document.getElementById("wordlist").value+=grammarFile;
+		grammarType="wordlist";
+		asrCapkey = "asr.cloud.grammar";
+		break;
+	default:
+		break;
+	}
+	
+	if ( asr_swfObj != null ){
+		asr_swfObj.SetASRCapkeyAndDomain( asrCapkey );
+		asr_swfObj.SetGrammarFile( grammarFile, grammarType );
+	}
+}
+
+// 点击开始
+$('#asr-section button').click(function(){
+
+	$(this).addClass('hidden');
+	$(this).siblings('button').removeClass('hidden');
+
+	if ($(this).hasClass('mic-start')) {
+		// 开始录音
+		recording();
+	} else {
+		// 停止录音
+		stoping();
+	}
+});
+
+
+
+		
+
+
+
+
